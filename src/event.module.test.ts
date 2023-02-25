@@ -6,15 +6,13 @@ import { EventService } from "@/event.service";
 import { IEvent } from "@/event.interface";
 import { OnEvent } from "@/on-event.decorator";
 
-describe('EventModule', () => {
+describe("EventModule", () => {
   let moduleRef: TestingModule;
   let eventService: EventService;
   let eventMethod: jest.Mock;
 
   class TestEvent implements IEvent {
-    constructor(
-      public readonly a: number
-    ) {}
+    constructor(public readonly a: number) {}
   }
 
   @Injectable()
@@ -29,12 +27,8 @@ describe('EventModule', () => {
     eventMethod = jest.fn();
 
     moduleRef = await Test.createTestingModule({
-      imports: [
-        EventModule.register({}),
-      ],
-      providers: [
-        TestService
-      ]
+      imports: [EventModule.register({})],
+      providers: [TestService],
     }).compile();
 
     await moduleRef.init();
@@ -46,8 +40,8 @@ describe('EventModule', () => {
     await moduleRef.close();
   });
 
-  it('should register OnEvent handlers', async () => {
+  it("should register OnEvent handlers", async () => {
     expect(eventService.emit(new TestEvent(1))).toBe(true);
-    expect(eventMethod).toBeCalledWith({a: 1});
+    expect(eventMethod).toBeCalledWith({ a: 1 });
   });
 });

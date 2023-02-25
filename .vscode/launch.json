@@ -10,12 +10,7 @@
       "name": "test",
       "skipFiles": ["<node_internals>/**"],
       "runtimeExecutable": "yarn",
-      "runtimeArgs": [
-        "test",
-        "--verbose",
-        "--watch",
-        "--onlyChanged"
-      ],
+      "runtimeArgs": ["test", "--verbose", "--watch", "--onlyChanged"],
       "sourceMaps": true,
       "pauseForSourceMap": true,
       "smartStep": true,

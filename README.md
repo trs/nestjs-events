@@ -19,15 +19,15 @@ yarn add @nestjs/common@^9 rxjs@^7
 Register the event module in your app
 
 ```ts
-import { Module } from '@nestjs/common';
-import { EventModule } from 'nestjs-events';
+import { Module } from "@nestjs/common";
+import { EventModule } from "nestjs-events";
 
 @Module({
   imports: [
     EventModule.register({
-      prefix: '' // optional
-    })
-  ]
+      prefix: "", // optional
+    }),
+  ],
 })
 export class AppModule {}
 ```
@@ -35,32 +35,27 @@ export class AppModule {}
 Declare your events.
 
 ```ts
-import { IEvent } from 'nestjs-events';
+import { IEvent } from "nestjs-events";
 
 export class MyEvent implements IEvent {
-  constructor(
-    public readonly value: number,
-    public readonly other: string
-  )
+  constructor(public readonly value: number, public readonly other: string);
 }
 ```
 
 Emit events with the `EventService`.
 
 ```ts
-import { Injectable } from '@nestjs/common';
-import { EventService } from 'nestjs-events';
+import { Injectable } from "@nestjs/common";
+import { EventService } from "nestjs-events";
 
-import { MyEvent } from './my-event.event.ts';
+import { MyEvent } from "./my-event.event.ts";
 
 @Injectable()
 export class MyService {
-  constructor(
-    private readonly eventService: EventService
-  ) {}
+  constructor(private readonly eventService: EventService) {}
 
   someMethod() {
-    this.eventService.emit(new MyEvent(1, 'hello'));
+    this.eventService.emit(new MyEvent(1, "hello"));
   }
 }
 ```
@@ -68,10 +63,10 @@ export class MyService {
 Listen to events through the `@OnEvent` decorator.
 
 ```ts
-import { Injectable } from '@nestjs/common';
-import { OnEvent } from 'nestjs-events';
+import { Injectable } from "@nestjs/common";
+import { OnEvent } from "nestjs-events";
 
-import { MyEvent } from './my-event.event.ts';
+import { MyEvent } from "./my-event.event.ts";
 
 @Injectable()
 export class MyService {
@@ -86,21 +81,17 @@ export class MyService {
 You can subscribe to events as well, returning an Observable.
 
 ```ts
-import { Injectable } from '@nestjs/common';
-import { OnEvent } from 'nestjs-events';
+import { Injectable } from "@nestjs/common";
+import { OnEvent } from "nestjs-events";
 
-import { MyEvent } from './my-event.event.ts';
+import { MyEvent } from "./my-event.event.ts";
 
 @Injectable()
 export class MyService {
-  constructor(
-    private readonly eventService: EventService
-  ) {}
+  constructor(private readonly eventService: EventService) {}
 
   someMethod() {
-    eventService.on(MyEvent)
-      .pipe()
-      .subscribe();
+    eventService.on(MyEvent).pipe().subscribe();
   }
 }
 ```

@@ -1,1 +1,1 @@
-export const EVENT_LISTENER_METADATA = Symbol('event-listener');
+export const EVENT_LISTENER_METADATA = Symbol("event-listener");
