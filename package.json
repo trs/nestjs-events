@@ -11,6 +11,10 @@
   "main": "build/cjs/main.js",
   "types": "build/types/main.d.ts",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trs/nestjs-events.git"
+  },
   "scripts": {
     "build": "yarn run-p build:cjs build:esm build:types",
     "prebuild:cjs": "yarn rimraf build/cjs",
