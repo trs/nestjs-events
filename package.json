@@ -32,6 +32,11 @@
   "lint-staged": {
     "*.{ts,js,md,json,yml}": "yarn eslint --fix"
   },
+  "release": {
+    "branches": [
+      "main"
+    ]
+  },
   "dependencies": {
     "@golevelup/nestjs-discovery": "^3.0.0"
   },
