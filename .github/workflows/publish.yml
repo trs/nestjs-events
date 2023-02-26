@@ -18,6 +18,8 @@ jobs:
           cache: "yarn"
       - name: Install
         run: yarn install --immutable
+      - name: Lint
+        run: yarn lint:check
       - name: Test
         run: yarn test
 
