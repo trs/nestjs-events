@@ -34,7 +34,8 @@
     ]
   },
   "lint-staged": {
-    "*.{ts,js,md,json,yml}": "yarn eslint --fix"
+    "*.{ts,js}": "yarn eslint --fix",
+    "*.{md,json,yml}": "yarn prettier --write"
   },
   "release": {
     "branches": [

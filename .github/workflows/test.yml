@@ -1,0 +1,26 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - name: Install
+        run: yarn install --immutable
+      - name: Lint
+        run: yarn lint:check
+      - name: Test
+        run: yarn test

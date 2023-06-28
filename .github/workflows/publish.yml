@@ -2,24 +2,11 @@ name: Publish
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "lts/*"
-          cache: "yarn"
-      - name: Install
-        run: yarn install --immutable
-      - name: Lint
-        run: yarn lint:check
-      - name: Test
-        run: yarn test
+    uses: ./.github/workflows/test.yml
 
   release:
     runs-on: ubuntu-latest
