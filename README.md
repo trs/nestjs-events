@@ -16,7 +16,23 @@ yarn add @nestjs/common@^9 rxjs@^7
 
 ## Usage
 
-Register the event module in your app
+Register the event module in your app to be available globally
+
+```ts
+import { Module } from "@nestjs/common";
+import { EventModule } from "nestjs-events";
+
+@Module({
+  imports: [
+    EventModule.forRoot({
+      prefix: "", // optional
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+Or only for a specific module
 
 ```ts
 import { Module } from "@nestjs/common";
@@ -29,7 +45,7 @@ import { EventModule } from "nestjs-events";
     }),
   ],
 })
-export class AppModule {}
+export class MyOtherModule {}
 ```
 
 Declare your events.

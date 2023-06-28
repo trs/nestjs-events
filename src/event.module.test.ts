@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Module } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { EventModule } from "@/event.module";
@@ -23,12 +23,16 @@ describe("EventModule", () => {
     }
   }
 
+  @Module({
+    providers: [TestService],
+  })
+  class TestModule {}
+
   beforeAll(async () => {
     eventMethod = jest.fn();
 
     moduleRef = await Test.createTestingModule({
-      imports: [EventModule.register({})],
-      providers: [TestService],
+      imports: [EventModule.forRoot(), TestModule],
     }).compile();
 
     await moduleRef.init();

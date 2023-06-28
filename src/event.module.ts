@@ -1,7 +1,17 @@
-import { Module, OnModuleDestroy, OnModuleInit, Type } from "@nestjs/common";
+import {
+  DynamicModule,
+  Module,
+  OnModuleDestroy,
+  OnModuleInit,
+  Type,
+} from "@nestjs/common";
 import { DiscoveryModule, DiscoveryService } from "@golevelup/nestjs-discovery";
 
-import { ConfigurableModuleClass } from "./event.module-definition";
+import {
+  ASYNC_OPTIONS_TYPE,
+  ConfigurableModuleClass,
+  OPTIONS_TYPE,
+} from "./event.module-definition";
 import { EventService } from "./event.service";
 import { EVENT_LISTENER_METADATA } from "./event.const";
 import { mergeMap, of } from "rxjs";
@@ -20,6 +30,28 @@ export class EventModule
     private readonly eventService: EventService
   ) {
     super();
+  }
+
+  static register(options?: typeof OPTIONS_TYPE): DynamicModule {
+    return super.register(options ?? {});
+  }
+
+  static registerAsync(options?: typeof ASYNC_OPTIONS_TYPE): DynamicModule {
+    return super.registerAsync(options ?? {});
+  }
+
+  static forRoot(options?: typeof OPTIONS_TYPE): DynamicModule {
+    return {
+      ...this.register(options),
+      global: true,
+    };
+  }
+
+  static forRootAsync(options?: typeof ASYNC_OPTIONS_TYPE): DynamicModule {
+    return {
+      ...this.registerAsync(options),
+      global: true,
+    };
   }
 
   async onModuleInit() {
