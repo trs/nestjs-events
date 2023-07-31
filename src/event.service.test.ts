@@ -25,8 +25,8 @@ describe("EventService", () => {
     testScheduler.run(({ cold, expectObservable }) => {
       expectObservable(
         cold("a-b", { a: 1, b: 2 }).pipe(
-          map((value) => eventService.emit(new TestEvent(value)))
-        )
+          map((value) => eventService.emit(new TestEvent(value))),
+        ),
       );
 
       expectObservable(sub).toBe("a-b", {

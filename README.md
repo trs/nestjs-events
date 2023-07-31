@@ -54,8 +54,25 @@ Declare your events.
 import { IEvent } from "nestjs-events";
 
 export class MyEvent implements IEvent {
-  constructor(public readonly value: number, public readonly other: string);
+  public readonly value: number;
+  public readonly other: string;
+
+  constructor(parameters: { value: number; other: string });
 }
+```
+
+You can also use the `EventBuilder` helper.
+
+```ts
+import { EventBuilder } from "nestjs-events";
+
+export class MyEvent extends EventBuilder<{ value: number; other: string }>() {}
+```
+
+```ts
+import { MyEvent } from "./my-event.event.ts";
+
+new MyEvent();
 ```
 
 Emit events with the `EventService`.
@@ -71,7 +88,7 @@ export class MyService {
   constructor(private readonly eventService: EventService) {}
 
   someMethod() {
-    this.eventService.emit(new MyEvent(1, "hello"));
+    this.eventService.emit(new MyEvent({ value: 1, other: "hello" }));
   }
 }
 ```

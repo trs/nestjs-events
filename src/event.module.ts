@@ -27,7 +27,7 @@ export class EventModule
 {
   constructor(
     private readonly discover: DiscoveryService,
-    private readonly eventService: EventService
+    private readonly eventService: EventService,
   ) {
     super();
   }

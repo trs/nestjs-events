@@ -12,7 +12,7 @@ export class EventService {
 
   constructor(
     @Inject(MODULE_OPTIONS_TOKEN)
-    private readonly options: EventModuleOptions
+    private readonly options: EventModuleOptions,
   ) {}
 
   #getEventName(name: string) {
@@ -22,7 +22,7 @@ export class EventService {
   public on<T extends IEvent>(EventClass: Type<T>): Observable<T> {
     return fromEvent(
       this.emitter,
-      this.#getEventName(EventClass.name)
+      this.#getEventName(EventClass.name),
     ) as Observable<T>;
   }
 
@@ -32,7 +32,7 @@ export class EventService {
 
   public off(EventClass?: Type<IEvent>): void {
     this.emitter.removeAllListeners(
-      EventClass ? this.#getEventName(EventClass.name) : undefined
+      EventClass ? this.#getEventName(EventClass.name) : undefined,
     );
   }
 
