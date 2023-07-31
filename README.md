@@ -8,10 +8,10 @@ Alternative event module for NestJS.
 yarn add nestjs-events
 ```
 
-`nestjs-events` works with NestJS 9 and RxJS 7, ensure your have those installed.
+`nestjs-events` works with NestJS (9 or 10) and RxJS 7, ensure your have those installed.
 
 ```sh
-yarn add @nestjs/common@^9 rxjs@^7
+yarn add @nestjs/common@^10 rxjs@^7
 ```
 
 ## Usage
