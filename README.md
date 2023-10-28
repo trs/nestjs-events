@@ -57,7 +57,10 @@ export class MyEvent implements IEvent {
   public readonly value: number;
   public readonly other: string;
 
-  constructor(parameters: { value: number; other: string });
+  constructor(parameters: { value: number; other: string }) {
+    this.value = parameters.value;
+    this.other = parameters.other;
+  }
 }
 ```
 
@@ -67,12 +70,6 @@ You can also use the `EventBuilder` helper.
 import { EventBuilder } from "nestjs-events";
 
 export class MyEvent extends EventBuilder<{ value: number; other: string }>() {}
-```
-
-```ts
-import { MyEvent } from "./my-event.event.ts";
-
-new MyEvent();
 ```
 
 Emit events with the `EventService`.
