@@ -51,9 +51,7 @@ export class MyOtherModule {}
 Declare your events.
 
 ```ts
-import { IEvent } from "nestjs-events";
-
-export class MyEvent implements IEvent {
+export class MyEvent {
   public readonly value: number;
   public readonly other: string;
 

@@ -3,7 +3,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 
 import { EventModule } from "@/event.module";
 import { EventService } from "@/event.service";
-import { IEvent } from "@/event.interface";
 import { OnEvent } from "@/on-event.decorator";
 
 describe("EventModule", () => {
@@ -11,7 +10,7 @@ describe("EventModule", () => {
   let eventService: EventService;
   let eventMethod: jest.Mock;
 
-  class TestEvent implements IEvent {
+  class TestEvent {
     constructor(public readonly a: number) {}
   }
 
