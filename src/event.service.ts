@@ -14,28 +14,52 @@ export class EventService {
     private readonly options: EventModuleOptions,
   ) {}
 
-  #getEventName(name: string) {
-    return (this.options.prefix ?? "") + name;
+  #getEventName<TEvent>(event: string | Type<TEvent>) {
+    return `${this.options.prefix ?? ""}${
+      typeof event === "string" ? event : event.name
+    }`;
   }
 
-  public on<T>(EventClass: Type<T>): Observable<T> {
+  public on<TEvent>(event: Type<TEvent>): Observable<TEvent>;
+  public on<TEvent>(event: string): Observable<TEvent>;
+  public on<TEvent>(event: string | Type<TEvent>): Observable<TEvent> {
     return fromEvent(
       this.emitter,
-      this.#getEventName(EventClass.name),
-    ) as Observable<T>;
+      this.#getEventName(event),
+    ) as Observable<TEvent>;
   }
 
-  public once<T>(EventClass: Type<T>): Observable<T> {
-    return this.on(EventClass).pipe(take(1));
+  public once<TEvent>(event: Type<TEvent>): Observable<TEvent>;
+  public once<TEvent>(event: string): Observable<TEvent>;
+  public once<TEvent>(event: string | Type<TEvent>): Observable<TEvent> {
+    return typeof event === "string"
+      ? this.on<TEvent>(event).pipe(take(1))
+      : this.on(event).pipe(take(1));
   }
 
-  public off<T>(EventClass?: Type<T>): void {
+  public off(): void;
+  public off<TEvent>(event: Type<TEvent>): void;
+  public off(event: string): void;
+  public off<TEvent>(event?: string | Type<TEvent>): void {
     this.emitter.removeAllListeners(
-      EventClass ? this.#getEventName(EventClass.name) : undefined,
+      event ? this.#getEventName(event) : undefined,
     );
   }
 
-  public emit<T>(event: T): boolean {
-    return this.emitter.emit(this.#getEventName(event.constructor.name), event);
+  public emit<TEvent>(event: InstanceType<Type<TEvent>>): boolean;
+  public emit<TEvent>(type: string, event: TEvent): boolean;
+  public emit<TEvent>(
+    type: string | InstanceType<Type<TEvent>>,
+    event?: TEvent,
+  ): boolean {
+    if (typeof type === "string") {
+      return this.emitter.emit(this.#getEventName(type), event);
+    }
+
+    if (!event) {
+      return this.emitter.emit(this.#getEventName(type.constructor.name), type);
+    }
+
+    throw new TypeError("Invalid arguments");
   }
 }
