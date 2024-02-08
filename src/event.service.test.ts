@@ -2,7 +2,6 @@ import { map } from "rxjs";
 import { TestScheduler } from "rxjs/testing";
 
 import { EventService } from "@/event.service";
-import { IEvent } from "@/event.interface";
 
 describe("EventService", () => {
   let eventService: EventService;
@@ -16,7 +15,7 @@ describe("EventService", () => {
   });
 
   it("subscribes to events", () => {
-    class TestEvent implements IEvent {
+    class TestEvent {
       constructor(public readonly value: number) {}
     }
 

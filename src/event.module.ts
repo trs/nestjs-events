@@ -3,7 +3,6 @@ import {
   Module,
   OnModuleDestroy,
   OnModuleInit,
-  Type,
 } from "@nestjs/common";
 import { DiscoveryModule, DiscoveryService } from "@golevelup/nestjs-discovery";
 
@@ -14,7 +13,7 @@ import {
 } from "./event.module-definition";
 import { EventService } from "./event.service";
 import { EVENT_LISTENER_METADATA } from "./event.const";
-import { mergeMap, of } from "rxjs";
+import { Subscription, mergeMap, of } from "rxjs";
 
 @Module({
   imports: [DiscoveryModule],
@@ -25,6 +24,8 @@ export class EventModule
   extends ConfigurableModuleClass
   implements OnModuleDestroy, OnModuleInit
 {
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private readonly discover: DiscoveryService,
     private readonly eventService: EventService,
@@ -55,19 +56,25 @@ export class EventModule
   }
 
   async onModuleInit() {
-    const providers = await this.discover.providerMethodsWithMetaAtKey<
-      Type<Event>
-    >(EVENT_LISTENER_METADATA);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const providers = await this.discover.providerMethodsWithMetaAtKey<any[]>(
+      EVENT_LISTENER_METADATA,
+    );
 
-    providers.forEach((provider) => {
-      this.eventService
-        .on(provider.meta)
-        .pipe(mergeMap((value) => of(provider.discoveredMethod.handler(value))))
-        .subscribe();
-    });
+    this.subscriptions = providers.flatMap((provider) =>
+      provider.meta.map((meta) => {
+        return this.eventService
+          .on(meta)
+          .pipe(
+            mergeMap((value) => of(provider.discoveredMethod.handler(value))),
+          )
+          .subscribe();
+      }),
+    );
   }
 
   onModuleDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.eventService.off();
   }
 }
